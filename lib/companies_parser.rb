@@ -38,11 +38,13 @@ class CompaniesParser
 
   def init_database
     @db = Sequel.connect('sqlite://companies.db')
-    @db.create_table :companies do
-      primary_key :id
-      String :href
-      String :name
-      Boolean :parsed, default: false
+    unless @db.table_exists?(:companies)
+      @db.create_table :companies do
+        primary_key :id
+        String :href
+        String :name
+        Boolean :parsed, default: false
+      end
     end
   end
 
