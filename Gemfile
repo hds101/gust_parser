@@ -7,8 +7,6 @@ gem 'capybara'
 gem 'poltergeist'
 gem 'launchy'
 
-gem 'mechanize'
-
 gem 'sqlite3'
 gem 'sequel'
 gem 'pry'
