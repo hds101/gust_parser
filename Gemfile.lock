@@ -1,11 +1,23 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.5.0)
+      public_suffix (~> 2.0, >= 2.0.2)
+    capybara (2.13.0)
+      addressable
+      mime-types (>= 1.16)
+      nokogiri (>= 1.3.3)
+      rack (>= 1.0.0)
+      rack-test (>= 0.5.4)
+      xpath (~> 2.0)
+    cliver (0.3.2)
     coderay (1.1.0)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
+    launchy (2.4.3)
+      addressable (~> 2.3)
     mechanize (2.7.1)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0.0)
@@ -23,23 +35,43 @@ GEM
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     ntlm-http (0.1.1)
+    poltergeist (1.14.0)
+      capybara (~> 2.1)
+      cliver (~> 0.3.1)
+      websocket-driver (>= 0.2.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    public_suffix (2.0.5)
+    rack (2.0.1)
+    rack-test (0.6.3)
+      rack (>= 1.0)
+    sequel (4.44.0)
     slop (3.6.0)
+    sqlite3 (1.3.11)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
     webrobots (0.1.1)
+    websocket-driver (0.6.5)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.2)
+    xpath (2.0.0)
+      nokogiri (~> 1.3)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  capybara
+  launchy
   mechanize
   nokogiri
+  poltergeist
   pry
+  sequel
+  sqlite3
 
 BUNDLED WITH
    1.13.6

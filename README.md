@@ -4,6 +4,7 @@
 ```
 git clone
 bundle install
+sudo apt-get install phantomjs
 ```
 
 ## ENV
@@ -18,5 +19,6 @@ export GUSTPARSER_PASSWORD="password"
 ## Run
 
 ```
-rake
+rake initilize  # init sqlite db
+rake parse
 ```
