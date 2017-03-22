@@ -1,5 +1,4 @@
 require 'capybara/poltergeist'
-require 'pry'
 require 'sequel'
 
 class CompaniesParser
@@ -24,6 +23,7 @@ class CompaniesParser
         href: company_link['href']
       )
     end
+    @browser.driver.clear_memory_cache
   end
 
   private
