@@ -1,5 +1,4 @@
-require 'selenium-webdriver'
-require 'capybara'
+require 'capybara/poltergeist'
 require 'sequel'
 
 class CompaniesParser
@@ -24,15 +23,16 @@ class CompaniesParser
         href: company_link['href']
       )
     end
+    @browser.driver.clear_memory_cache
   end
 
   private
 
   def init_capybara
-    Capybara.register_driver :selenium do |app|
-      Capybara::Selenium::Driver.new(app)
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(app, js_errors: false)
     end
-    Capybara.default_driver = :selenium
+    Capybara.default_driver = :poltergeist
     @browser = Capybara.current_session
   end
 

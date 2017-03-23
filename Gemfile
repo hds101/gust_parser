@@ -4,7 +4,7 @@ ruby '2.3.0'
 gem 'nokogiri'
 
 gem 'capybara'
-gem 'selenium-webdriver', '2.53.4'
+gem 'poltergeist'
 
 gem 'sqlite3'
 gem 'sequel'
