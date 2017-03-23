@@ -4,7 +4,7 @@ require 'bundler/setup'
 task :parse_companies do
   require './lib/companies_parser.rb'
   parser = CompaniesParser.new
-  (2947..11859).each do |page|
+  (3854..11859).each do |page|
     puts "== Parsing page #{page} of 11859"
     parser.parse(page)
   end
