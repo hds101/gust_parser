@@ -1,6 +1,3 @@
-require 'capybara/poltergeist'
-require 'sequel'
-
 class CompaniesParser
   ACCOUNT = { email: ENV['GUSTPARSER_EMAIL'],
               password: ENV['GUSTPARSER_PASSWORD'] }
