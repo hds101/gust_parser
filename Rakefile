@@ -1,23 +1,18 @@
 require 'bundler/setup'
 Bundler.require :default
+Dir["./lib/*.rb"].each {|file| require file }
 
-# task :collect_companies do
-#   require './lib/companies_parser.rb'
-#   parser = CompaniesParser.new
-#   (11146..11875).each do |page|
-#     puts "== Parsing page #{page} of 11865"
-#     parser.parse(page)
-#   end
-# end
+desc 'Collect all companies to companies.db'
+task :collect do
+  Collector.new.loop
+end
 
+desc 'Parse companies from companies.db to gust.db'
 task :start do
-  require './lib/crawler.rb'
-  require './lib/parser.rb'
   Crawler.new.start
 end
 
+desc 'Remove gust.db and reset all companies in companies.db'
 task :reset do
-  require './lib/crawler.rb'
-  require './lib/parser.rb'
-  Crawler.new.reset!
+  Crawler.reset!
 end
