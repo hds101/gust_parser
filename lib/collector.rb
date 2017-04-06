@@ -20,8 +20,8 @@ class Collector
     @index += 1
     next_page = @browser.all('#search_results li.last').first.find('a')[:href]
     puts "Going to #{next_page}..."
-    # Reset phantomjs each 200'th page
-    restart_phantomjs if !@index.zero? && (@index % 200).zero?
+    # Reset phantomjs each 100'th page
+    restart_phantomjs if !@index.zero? && (@index % 100).zero?
     loop next_page
   end
 

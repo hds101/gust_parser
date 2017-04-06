@@ -15,8 +15,8 @@ class Crawler
       @parser.parse(@browser, company[:href], company[:id])
       print "#{index+1}/#{count}...\r"
       @db[:companies].where(id: company[:id]).update(parsed: true)
-      # Reset phantomjs each 200'th record
-      restart_phantomjs if !index.zero? && (index % 200).zero?
+      # Reset phantomjs each 100'th record
+      restart_phantomjs if !index.zero? && (index % 100).zero?
     end
   end
 
