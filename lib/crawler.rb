@@ -1,7 +1,9 @@
 require 'capybara/poltergeist'
+require 'logger'
 
 class Crawler
   def initialize
+    init_logger
     init_database
     init_capybara
     authorize
@@ -9,28 +11,40 @@ class Crawler
   end
 
   def start
+    @logger.warn(">>>>> Start parsing at #{Time.now}")
     collection = @db[:companies].where(parsed: false)
-    count = collection.count
     collection.each_with_index do |company, index|
+      @logger.info("#{index} #{company[:href]}")
       @parser.parse(@browser, company[:href], company[:id])
-      print "#{index+1}/#{count}...\r"
       @db[:companies].where(id: company[:id]).update(parsed: true)
-      # Reset phantomjs each 100'th record
-      restart_phantomjs if !index.zero? && (index % 100).zero?
+      break 'terminate' if index == 200
+      # We need to restart phantomjs because it cause OOM on server
+      # TODO: Find a way to get rid of this
+      restart_phantomjs if !index.zero? && (index % 50).zero?
     end
+    @logger.warn(">>>>> SUCCESS")
+  rescue
+    @logger.fatal($!)
+    raise $!
   end
 
   def self.reset!
-    File.delete 'gust.db'
-    Sequel.connect('sqlite://companies.db')[:companies]
+    File.delete './log/crawler.log' if File.exists? './log/crawler.log'
+    File.delete './db/gust.db'      if File.exists? './db/gust.db'
+    Sequel.connect('sqlite://db/companies.db')[:companies]
           .where(parsed: true)
           .update(parsed: false)
   end
 
   private
 
+  def init_logger
+    @logger = Logger.new('./log/crawler.log', File::APPEND)
+    @logger.level = Logger::INFO
+  end
+
   def init_database
-    @db = Sequel.connect('sqlite://companies.db')
+    @db = Sequel.connect('sqlite://db/companies.db')
   end
 
   def init_capybara
@@ -48,7 +62,7 @@ class Crawler
     Capybara.send('session_pool').each do |_, session|
       next unless session.driver.is_a?(Capybara::Poltergeist::Driver)
       session.driver.restart
-      puts "Restart phantomjs: OK"
+      @logger.warn('>>>>> Restarted phantomjs')
       authorize
     end
   end
@@ -59,6 +73,6 @@ class Crawler
     node.fill_in 'user_email', with: ENV['GUSTPARSER_EMAIL']
     node.fill_in 'user_password', with: ENV['GUSTPARSER_PASSWORD']
     node.click_on 'Sign In'
-    puts "Authorize: OK"
+    @logger.warn('>>>>> Authorized')
   end
 end

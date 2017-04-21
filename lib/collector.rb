@@ -12,10 +12,11 @@ class Collector
     @browser.find('#search_results')
             .all('.list-group-item .card-title > a')
             .each do |company_link|
-      @db[:companies].insert(
-        name: company_link.text,
-        href: company_link[:href]
-      )
+      # The only unique identifier here is href
+      unless @db[:companies].where(href: company_link[:href]).nil?
+        @db[:companies].insert(name: company_link.text,
+                               href: company_link[:href])
+      end
     end
     @index += 1
     next_page = @browser.all('#search_results li.last').first.find('a')[:href]

@@ -9,6 +9,7 @@ end
 
 desc 'Parse companies from companies.db to gust.db'
 task :start do
+  # TODO: Threads, http/nokogiri, tags
   Crawler.new.start
 end
 
